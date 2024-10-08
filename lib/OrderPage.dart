@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
 
@@ -8,6 +7,14 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
+  String foodItem = 'Pizza';
+
+  void _changeimage(String img) {
+    setState(() {
+      foodItem = img;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,11 +52,11 @@ class _OrderPageState extends State<OrderPage> {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        makeCatogery(isAvailable: true, itemName: "Pizza"),
-                        makeCatogery(isAvailable: false, itemName: "Burger"),
-                        makeCatogery(isAvailable: false, itemName: "Pasta"),
-                        makeCatogery(isAvailable: false, itemName: "Salad"),
-                        makeCatogery(isAvailable: false, itemName: "Cookies"),
+                        makeCatogery(itemName: "Pizza"),
+                        makeCatogery(itemName: "Burger"),
+                        makeCatogery(itemName: "Pasta"),
+                        makeCatogery(itemName: "Salad"),
+                        makeCatogery(itemName: "Desert"),
                       ],
                     ),
                   ),
@@ -60,7 +67,7 @@ class _OrderPageState extends State<OrderPage> {
               ),
             ),
             Padding(
-              padding:const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Text(
                 'Free Delivery',
                 style: TextStyle(
@@ -69,18 +76,8 @@ class _OrderPageState extends State<OrderPage> {
                     fontSize: 20.0),
               ),
             ),
-            Expanded(
-              child: Padding(
-                  padding:const EdgeInsets.all(20),
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      makeImage(image: "assets/images/pizza-2.webp"),
-                      makeImage(image: "assets/images/pizza-3.jpg"),
-                      makeImage(image: "assets/images/pizza-4.jpg"),
-                    ],
-                  )),
-            ),
+            createfoodlist(foodItem),
+            
             const SizedBox(
               height: 30,
             ),
@@ -90,22 +87,29 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  Widget makeCatogery({required bool isAvailable, required String itemName}) {
+
+
+  Widget makeCatogery({required String itemName}) {
     return AspectRatio(
-      aspectRatio: isAvailable ? 3 : 2.0 / 1,
+      aspectRatio: 2.0 / 1,
       child: Container(
           margin: const EdgeInsets.only(right: 10.0),
           decoration: BoxDecoration(
-            color: isAvailable ? Colors.yellow[700] : Colors.white,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(26),
           ),
-          child: Align(
-            child: Text(
-              itemName,
-              style: TextStyle(
-                  color: isAvailable ? Colors.white : Colors.grey[700],
-                  fontWeight: isAvailable ? FontWeight.bold : FontWeight.w100,
-                  fontSize: 18),
+          child: MaterialButton(
+            onPressed: () {
+              _changeimage(itemName);
+            },
+            child: Align(
+              child: Text(
+                itemName,
+                style: TextStyle(
+                    color: Colors.grey[700],
+                    fontWeight: FontWeight.w100,
+                    fontSize: 18),
+              ),
             ),
           )),
     );
@@ -118,11 +122,11 @@ class _OrderPageState extends State<OrderPage> {
           child: Container(
             margin: const EdgeInsets.only(right: 20),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
-              image: AssetImage(image),
-              fit: BoxFit.cover,
-            )),
+                  image: AssetImage(image),
+                  fit: BoxFit.cover,
+                )),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -136,7 +140,7 @@ class _OrderPageState extends State<OrderPage> {
                   padding: EdgeInsets.all(20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
-                   crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Align(
                         alignment: Alignment.topLeft,
@@ -145,19 +149,33 @@ class _OrderPageState extends State<OrderPage> {
                           color: Colors.white,
                         ),
                       ),
-                      Column(
-                        
-                        
-                        children:[ Text('\$ 15.00 ',
+                      Column(children: [
+                        Text('\$ 15.00 ',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 40.0)),
-                     ] )
+                      ])
                     ],
                   )),
             ),
           ),
         ));
+  }
+
+  Widget createfoodlist(String fooditem) {
+        
+    return Expanded(
+      child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              makeImage(image: "assets/images/$fooditem-1.jpg"),
+              makeImage(image: "assets/images/$fooditem-2.jpg"),
+              makeImage(image: "assets/images/$fooditem-3.jpg"),
+            ],
+          )),
+    );
   }
 }

@@ -15,7 +15,7 @@ class _InitialPageState extends State<InitialPage> {
         body: Container(
       decoration:const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/pizza-1.webp'),
+          image: AssetImage('assets/images/Pizza-4.jpg'),
           fit: BoxFit.cover,
         ),
       ),
