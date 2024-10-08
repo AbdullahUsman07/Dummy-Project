@@ -9,6 +9,7 @@ class OrderPage extends StatefulWidget {
 class _OrderPageState extends State<OrderPage> {
   String foodItem = 'Pizza';
 
+
   void _changeimage(String img) {
     setState(() {
       foodItem = img;
@@ -52,11 +53,11 @@ class _OrderPageState extends State<OrderPage> {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        makeCatogery(itemName: "Pizza"),
-                        makeCatogery(itemName: "Burger"),
-                        makeCatogery(itemName: "Pasta"),
-                        makeCatogery(itemName: "Salad"),
-                        makeCatogery(itemName: "Desert"),
+                        makeCatogery(itemName: "Pizza",flag:true),
+                        makeCatogery(itemName: "Burger",flag:true),
+                        makeCatogery(itemName: "Pasta",flag:false),
+                        makeCatogery(itemName: "Salad",flag:false),
+                        makeCatogery(itemName: "Desert",flag:false),
                       ],
                     ),
                   ),
@@ -89,25 +90,26 @@ class _OrderPageState extends State<OrderPage> {
 
 
 
-  Widget makeCatogery({required String itemName}) {
+  Widget makeCatogery({required String itemName,required bool flag}) {
     return AspectRatio(
       aspectRatio: 2.0 / 1,
       child: Container(
           margin: const EdgeInsets.only(right: 10.0),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: flag?Colors.yellow:Colors.white,
             borderRadius: BorderRadius.circular(26),
           ),
           child: MaterialButton(
             onPressed: () {
               _changeimage(itemName);
+              flag=true;
             },
             child: Align(
               child: Text(
                 itemName,
                 style: TextStyle(
-                    color: Colors.grey[700],
-                    fontWeight: FontWeight.w100,
+                    color:flag? Colors.black: Colors.grey[700],
+                    fontWeight: flag? FontWeight.bold: FontWeight.w100,
                     fontSize: 18),
               ),
             ),
