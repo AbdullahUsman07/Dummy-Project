@@ -8,7 +8,17 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
   String foodItem = 'Pizza';
+  
 
+  // creating map for prices
+
+   final Map <String, List<double>> itemPrice={
+    'Pizza':[12.99,15.99,18.99],
+    'Burger':[17.99,10.99,14.99],
+    'Pasta':[11.69,13.99,11.99],
+    'Salad':[7.99,6.99,7.50],
+    'Desert':[5.99,4.66,3.99]
+   };
 
   void _changeimage(String img) {
     setState(() {
@@ -53,11 +63,11 @@ class _OrderPageState extends State<OrderPage> {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        makeCatogery(itemName: "Pizza",flag:true),
-                        makeCatogery(itemName: "Burger",flag:true),
-                        makeCatogery(itemName: "Pasta",flag:false),
-                        makeCatogery(itemName: "Salad",flag:false),
-                        makeCatogery(itemName: "Desert",flag:false),
+                        makeCatogery(itemName: "Pizza"),
+                        makeCatogery(itemName: "Burger"),
+                        makeCatogery(itemName: "Pasta"),
+                        makeCatogery(itemName: "Salad"),
+                        makeCatogery(itemName: "Desert"),
                       ],
                     ),
                   ),
@@ -90,26 +100,29 @@ class _OrderPageState extends State<OrderPage> {
 
 
 
-  Widget makeCatogery({required String itemName,required bool flag}) {
+  Widget makeCatogery({required String itemName}) {
+
+    bool isSelected = (itemName==foodItem);
+
     return AspectRatio(
-      aspectRatio: 2.0 / 1,
+      aspectRatio:isSelected? 3.0: 2.0 / 1,
       child: Container(
           margin: const EdgeInsets.only(right: 10.0),
           decoration: BoxDecoration(
-            color: flag?Colors.yellow:Colors.white,
+            color:isSelected? Colors.yellow: Colors.white,
             borderRadius: BorderRadius.circular(26),
           ),
           child: MaterialButton(
             onPressed: () {
               _changeimage(itemName);
-              flag=true;
+            
             },
             child: Align(
               child: Text(
                 itemName,
                 style: TextStyle(
-                    color:flag? Colors.black: Colors.grey[700],
-                    fontWeight: flag? FontWeight.bold: FontWeight.w100,
+                    color:isSelected? Colors.black: Colors.grey[700],
+                    fontWeight: isSelected? FontWeight.bold: FontWeight.w100,
                     fontSize: 18),
               ),
             ),
@@ -117,7 +130,7 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  Widget makeImage({required String image}) {
+  Widget makeImage({required String image,double? price}) {
     return AspectRatio(
         aspectRatio: 1 / 1.5,
         child: GestureDetector(
@@ -138,13 +151,13 @@ class _OrderPageState extends State<OrderPage> {
                     Colors.black.withOpacity(0.2),
                     Colors.black.withOpacity(0.1),
                   ])),
-              child: const Padding(
-                  padding: EdgeInsets.all(20),
+              child: Padding(
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Align(
+                      const Align(
                         alignment: Alignment.topLeft,
                         child: Icon(
                           Icons.favorite,
@@ -152,8 +165,8 @@ class _OrderPageState extends State<OrderPage> {
                         ),
                       ),
                       Column(children: [
-                        Text('\$ 15.00 ',
-                            style: TextStyle(
+                        Text(' \$ ${price.toString()}',
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 40.0)),
@@ -166,16 +179,18 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   Widget createfoodlist(String fooditem) {
-        
+    
+    // if the item's prices are not defined assigned them as zeros
+    List <double>? prices = itemPrice[fooditem]??[0.00,0.00,00.0];
     return Expanded(
       child: Padding(
           padding: const EdgeInsets.all(20),
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              makeImage(image: "assets/images/$fooditem-1.jpg"),
-              makeImage(image: "assets/images/$fooditem-2.jpg"),
-              makeImage(image: "assets/images/$fooditem-3.jpg"),
+              makeImage(image: "assets/images/$fooditem-1.jpg",price:prices[0]),
+              makeImage(image: "assets/images/$fooditem-2.jpg",price:prices[1]),
+              makeImage(image: "assets/images/$fooditem-3.jpg",price:prices[2]),
             ],
           )),
     );
